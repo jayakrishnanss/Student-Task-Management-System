@@ -2,7 +2,7 @@
 
 import { HomeComponent } from './modules/home';
 import { LoginComponent } from './modules/login';
-import { RegisterComponent } from './register';
+import { RegisterComponent } from './modules/register';
 import { AuthGuard } from './core/_guards';
 
 const appRoutes: Routes = [
