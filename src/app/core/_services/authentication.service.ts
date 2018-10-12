@@ -7,15 +7,15 @@ export class AuthenticationService {
     constructor(private http: HttpClient) { }
 
     login(username: string, password: string) {
-        return this.http.post<any>(`${config.apiUrl}/users/authenticate`, { username: username, password: password })
-            .pipe(map(user => {
+        
+        return this.http.post<any>(`${config.apiUrl}/users/login`, { email: username, password: password })
+            .pipe(map(response => {
                 // login successful if there's a jwt token in the response
-                if (user && user.token) {
+                if (response.status === 1 && response.result.accessToken) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('currentUser', JSON.stringify(response.result));
                 }
-
-                return user;
+                return response.result;
             }));
     }
 

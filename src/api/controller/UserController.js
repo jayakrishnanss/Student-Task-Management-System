@@ -25,6 +25,7 @@ exports.registerUser = (req, res) => {
                     .then(data => {
                         res(apiResponse.success({
                             message: 'User successfully created',
+                            status: 1,
                             result: this.formatUser(data)
                         }));
                     }).catch(err => {
@@ -34,12 +35,13 @@ exports.registerUser = (req, res) => {
                     });
             } else {
                 res(apiResponse.success({
+                    status: 0,
                     message: 'User already exists'
                 }));
             }
         }).catch(err => {
             res(apiResponse.error({
-                message: 'User already exists'
+                message: err
             }));
         });
 };
@@ -60,10 +62,12 @@ exports.login = (req, res) => {
             if (data) {
                 res(apiResponse.success({
                     message: 'User successfully logged in',
+                    status: 1,
                     result: this.formatUser(data)
                 }));
             } else {
                 res(apiResponse.success({
+                    status: 0,
                     message: 'User does not exists'
                 }));
             }
@@ -73,7 +77,33 @@ exports.login = (req, res) => {
             }));
         });
 };
-
+exports.logout = (req, res) => {
+    userModel.findOneAndUpdate({
+            'email': req.email
+        }, {
+            accessToken: ""
+        }, {
+            new: true
+        })
+        .then(data => {
+            if (data) {
+                res(apiResponse.success({
+                    message: 'User successfully logged out',
+                    status: 1,
+                    result: this.formatUser(data)
+                }));
+            } else {
+                res(apiResponse.success({
+                    status: 0,
+                    message: 'User does not exists'
+                }));
+            }
+        }).catch(err => {
+            res(apiResponse.error({
+                message: err
+            }));
+        });
+};
 exports.formatUser = (data) => {
     return {
         id: data._id,

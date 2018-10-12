@@ -3,6 +3,7 @@ module.exports = {
         var retData = {};
         retData.error = 0;
         retData.message = data.message;
+        retData.status = data.status;
         try {
             if (data.accessToken)
                 data.accessToken = data.accessToken.toString();
