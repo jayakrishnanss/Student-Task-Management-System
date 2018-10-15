@@ -6,14 +6,15 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var config = require('./utils/Config');
 
 var app = express();
 
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost:27017/stud_db', {
+var db = mongoose.connect('mongodb://'+config.db.host+':'+config.db.port+'/'+config.db.name, {
 	useNewUrlParser: true
 }).then(() => {
-    console.log("Successfully connected to the database");    
+    console.log("Successfully connected to the database");   
 }).catch(err => {
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();

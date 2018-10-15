@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AlertService, AuthenticationService } from '../../core/_services';
+import { AlertService, APIService } from '../../core/_services';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
@@ -16,17 +16,17 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService,
+        private apiService: APIService,
         private alertService: AlertService) { }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
-            username: ['', Validators.required],
+            username: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required]
         });
 
         // reset login status
-        this.authenticationService.logout();
+        this.apiService.logout();
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -44,11 +44,18 @@ export class LoginComponent implements OnInit {
         }
 
         this.loading = true;
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
+        // Login api call
+        this.apiService.postAPICall(`${config.apiUrl}/users/login`, { email: this.f.username.value, password: this.f.password.value })
             .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                    if (data.status && data.result.accessToken) {
+                        localStorage.setItem('currentUser', JSON.stringify(data.result));
+                        this.router.navigate([this.returnUrl]);
+                    } else {
+                        this.alertService.error(data.message);
+                        this.loading = false;
+                    }
                 },
                 error => {
                     this.alertService.error(error);

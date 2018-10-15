@@ -1,5 +1,6 @@
 const userModel = require('../model/User');
 var apiResponse = require('../utils/Response'),
+    config = require('../utils/Config'),
     crypto = require('crypto'),
     jwt = require('jwt-simple'),
     secret = 'xxx';
@@ -10,7 +11,7 @@ exports.registerUser = (req, res) => {
     // Validate request
     if (!req.email || !req.firstName || !req.lastName || !req.password || !req.userType) {
         res(apiResponse.error({
-            message: 'Please fill out all required fields'
+            message: config.messages.required_fields
         }));
     }
     const user = new userModel(req);
@@ -24,8 +25,8 @@ exports.registerUser = (req, res) => {
                 user.save()
                     .then(data => {
                         res(apiResponse.success({
-                            message: 'User successfully created',
-                            status: 1,
+                            message: config.messages.signup_success,
+                            status: config.status.success,
                             result: this.formatUser(data)
                         }));
                     }).catch(err => {
@@ -35,8 +36,8 @@ exports.registerUser = (req, res) => {
                     });
             } else {
                 res(apiResponse.success({
-                    status: 0,
-                    message: 'User already exists'
+                    status: config.status.failure,
+                    message: config.messages.signup_user_exists
                 }));
             }
         }).catch(err => {
@@ -61,14 +62,14 @@ exports.login = (req, res) => {
         .then(data => {
             if (data) {
                 res(apiResponse.success({
-                    message: 'User successfully logged in',
-                    status: 1,
+                    message: config.messages.login_success,
+                    status: config.status.success,
                     result: this.formatUser(data)
                 }));
             } else {
                 res(apiResponse.success({
-                    status: 0,
-                    message: 'User does not exists'
+                    status: config.status.failure,
+                    message: config.messages.login_user_not_exists
                 }));
             }
         }).catch(err => {
@@ -88,14 +89,14 @@ exports.logout = (req, res) => {
         .then(data => {
             if (data) {
                 res(apiResponse.success({
-                    message: 'User successfully logged out',
-                    status: 1,
+                    message: config.messages.logout_success,
+                    status: config.status.success,
                     result: this.formatUser(data)
                 }));
             } else {
                 res(apiResponse.success({
-                    status: 0,
-                    message: 'User does not exists'
+                    status: config.status.failure,
+                    message: config.messages.error
                 }));
             }
         }).catch(err => {

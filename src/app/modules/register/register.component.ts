@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AlertService, UserService } from '../../core/_services';
+import { AlertService, APIService } from '../../core/_services';
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
@@ -14,14 +14,14 @@ export class RegisterComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        private userService: UserService,
+        private apiService: APIService,
         private alertService: AlertService) { }
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            email: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]],
             userType: ['', Validators.required],
         });
@@ -39,7 +39,8 @@ export class RegisterComponent implements OnInit {
         }
 
         this.loading = true;
-        this.userService.signUp(this.registerForm.value)
+        // Sign up API call
+        this.apiService.postAPICall(`${config.apiUrl}/users/signUp`,this.registerForm.value)
             .pipe(first())
             .subscribe(
                 data => {
