@@ -31,7 +31,7 @@ exports.registerUser = (req, res) => {
                         }));
                     }).catch(err => {
                         res(apiResponse.error({
-                            message: err
+                            message: config.messages.error
                         }));
                     });
             } else {
@@ -42,7 +42,7 @@ exports.registerUser = (req, res) => {
             }
         }).catch(err => {
             res(apiResponse.error({
-                message: err
+                message: config.messages.error
             }));
         });
 };
@@ -74,7 +74,7 @@ exports.login = (req, res) => {
             }
         }).catch(err => {
             res(apiResponse.error({
-                message: err
+                message: config.messages.error
             }));
         });
 };
@@ -101,7 +101,7 @@ exports.logout = (req, res) => {
             }
         }).catch(err => {
             res(apiResponse.error({
-                message: err
+                message: config.messages.error
             }));
         });
 };
