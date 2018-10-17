@@ -22,4 +22,20 @@ router.post('/logout', (req, res, next) => {
     res.json(data);
   })
 });
+router.post('/getUsers', (req, res, next) => {
+  userController.getUsers(req.body, (data) => {
+    res.json(data);
+  })
+});
+router.post('/approveUser', (req, res, next) => {
+  userController.approveUser(req.body, (data) => {
+    res.json(data);
+  })
+});
+router.post('/deleteUser', (req, res, next) => {
+  userController.deleteUser(req.body, (data) => {
+    res.json(data);
+  })
+});
+
 module.exports = router;

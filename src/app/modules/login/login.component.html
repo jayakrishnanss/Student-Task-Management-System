@@ -2,16 +2,16 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <section class="form-group">
         <input placeholder="Email" type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-        <article *ngIf="submitted && f.username.errors" class="invalid-feedback">
+        <span *ngIf="submitted && f.username.errors" class="invalid-feedback">
             <span *ngIf="f.username.errors.required">Username is required</span>
             <span *ngIf="f.username.errors.email">Invalid email address</span>
-        </article>
+        </span>
     </section>
     <section class="form-group">
         <input placeholder="Password" type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />       
-        <article *ngIf="submitted && f.password.errors" class="invalid-feedback">
+        <span *ngIf="submitted && f.password.errors" class="invalid-feedback">
             <span *ngIf="f.password.errors.required">Password is required</span>
-        </article>
+        </span>
     </section>
     <section class="form-group">
         <button [disabled]="loading" class="btn btn-primary">Login</button>

@@ -114,6 +114,59 @@ exports.formatUser = (data) => {
         accessToken: data.accessToken,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
-        userType: data.userType
+        userType: data.userType,
+        isApproved: data.isApproved
     };
+};
+exports.getUsers = (req, res) => {
+    userModel.find({
+            'userType': req.userType
+        })
+        .then(data => {
+            res(apiResponse.success({
+                message: config.messages.data_load_success,
+                status: config.status.success,
+                result: data
+            }));
+        }).catch(err => {
+            res(apiResponse.error({
+                message: config.messages.error
+            }));
+        });
+};
+exports.approveUser = (req, res) => {
+    userModel.findOneAndUpdate({
+            'email': req.email
+        }, {
+            isApproved: req.isApproved
+        }, {
+            new: true
+        })
+        .then(data => {
+            res(apiResponse.success({
+                message: config.messages.approve_success,
+                status: config.status.success,
+                result: data
+            }));
+        }).catch(err => {
+            res(apiResponse.error({
+                message: config.messages.error
+            }));
+        });
+};
+exports.deleteUser = (req, res) => {
+    userModel.deleteOne({
+            'email': req.email
+        })
+        .then(data => {
+            res(apiResponse.success({
+                message: config.messages.delete_success,
+                status: config.status.success,
+                result: data
+            }));
+        }).catch(err => {
+            res(apiResponse.error({
+                message: config.messages.error
+            }));
+        });
 };

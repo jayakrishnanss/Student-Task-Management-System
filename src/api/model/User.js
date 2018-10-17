@@ -26,6 +26,10 @@ const UserSchema = mongoose.Schema({
     accessToken : {
         type: 'String',
         required: false
+    },
+    isApproved:{
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

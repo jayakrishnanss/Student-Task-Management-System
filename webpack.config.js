@@ -4,8 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/main.ts',
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.ts$/,
         use: ['ts-loader', 'angular2-template-loader'],
         exclude: /node_modules/
@@ -14,6 +13,10 @@ module.exports = {
         test: /\.(html|css)$/,
         loader: 'raw-loader'
       },
+      {
+        test: /\.scss$/,
+        loaders: ['text-loader','style-loader', 'css-loader', 'sass-loader']
+      }
     ]
   },
   resolve: {

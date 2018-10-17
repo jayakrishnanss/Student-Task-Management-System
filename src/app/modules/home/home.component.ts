@@ -7,7 +7,6 @@ import { APIService } from '../../core/_services';
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit {
     currentUser: User;
-    users: User[] = [];
 
     constructor(private apiService: APIService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));

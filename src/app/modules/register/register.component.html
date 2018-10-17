@@ -2,35 +2,39 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <section class="form-group">
         <input placeholder="First Name" type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-        <article *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+        <span *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
             <span *ngIf="f.firstName.errors.required">First Name is required</span>
-        </article>
+        </span>
     </section>
     <section class="form-group">
         <input placeholder="Last Name" type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-        <article *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+        <span *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
             <span *ngIf="f.lastName.errors.required">Last Name is required</span>
-        </article>
+        </span>
     </section>
     <section class="form-group">
         <input placeholder="Email" type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-        <article *ngIf="submitted && f.email.errors" class="invalid-feedback">
+        <span *ngIf="submitted && f.email.errors" class="invalid-feedback">
             <span *ngIf="f.email.errors.required">Email is required</span>
             <span *ngIf="f.email.errors.email">Invalid email address</span>
-        </article>
+        </span>
     </section>
     <section class="form-group">
         <input placeholder="Password" type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-        <article *ngIf="submitted && f.password.errors" class="invalid-feedback">
+        <span *ngIf="submitted && f.password.errors" class="invalid-feedback">
             <span *ngIf="f.password.errors.required">Password is required</span>
             <span *ngIf="f.password.errors.minlength">Password must be at least 6 characters</span>
-        </article>
+        </span>
     </section>
     <section class="form-group">
-        <input placeholder="User Type" formControlName="userType" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.userType.errors }" />
-        <article *ngIf="submitted && f.userType.errors" class="invalid-feedback">
+        <select formControlName="userType" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.userType.errors }">
+            <option [ngValue]="null" selected="selected">User Type</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+        </select>
+        <span *ngIf="submitted && f.userType.errors" class="invalid-feedback">
             <span *ngIf="f.userType.errors.required">User Type is required</span>
-        </article>
+        </span>
     </section>
     <section class="form-group">
         <button [disabled]="loading" class="btn btn-primary">Register</button>

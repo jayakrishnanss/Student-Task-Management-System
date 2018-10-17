@@ -5,4 +5,5 @@
     accessToken: string;
     userType: string;
     password: string;
+    isApproved: boolean;
 }
