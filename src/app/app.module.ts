@@ -19,6 +19,7 @@ import { RegisterComponent } from './modules/register';
 import {FooterComponent} from './modules/shared/footer';
 import {HeaderComponent} from './modules/shared/header';
 import {UserListingComponent} from './modules/admin/user-listing';
+import {CreateTaskComponent} from './modules/tasks/create-task';
 import {ClassComponent} from './modules/admin/class';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { Globals } from './core/_helpers/globals';
@@ -43,7 +44,8 @@ import { from } from 'rxjs';
         LoginComponent,
         RegisterComponent,
         UserListingComponent,
-        ClassComponent
+        ClassComponent,
+        CreateTaskComponent
     ],
     providers: [
         AuthGuard,
