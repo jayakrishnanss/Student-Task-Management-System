@@ -14,7 +14,9 @@ const config = {
         required_fields: 'Please fill out all required fields.',
         data_load_success: 'Data loaded successfully.',
         approve_success: 'User has been approved successfully',
-        delete_success: 'User has been deleted successfully'
+        delete_success: 'User has been deleted successfully',
+        create_class_success: 'Class has been created successfully',
+        class_exist: 'Class already exists'
     },
     status: {
         success: 1,

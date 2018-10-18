@@ -12,6 +12,7 @@ export class ClassComponent implements OnInit {
     submitted = false;
     teachers: User[];
     students: User[];
+    selectedStudents: any[];
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -21,7 +22,7 @@ export class ClassComponent implements OnInit {
 
     ngOnInit() {
         this.classForm = this.formBuilder.group({
-            class: ['', [Validators.required]],
+            classTitle: ['', [Validators.required]],
             teacher: ['', Validators.required]
         });
         // load teachers
@@ -63,10 +64,39 @@ export class ClassComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-
         // stop here if form is invalid
         if (this.classForm.invalid) {
             return;
         }
+        this.loading = true;
+        var calssReq =  this.classForm.value;
+        calssReq.students = this.selectedStudents;
+        debugger
+        this.apiService.postAPICall(`${config.apiUrl}/class/createClass`,calssReq)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    if (data.status === 1) {
+                        this.alertService.success(data.message, true);
+                        this.loading = false;
+                        this.router.navigate(['/login']);
+                    } else {
+                        this.alertService.error(data.message);
+                        this.loading = false;
+                    }
+                },
+                error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
+    }
+    onSelectStudent(student: User, event: any) {
+        if (!this.selectedStudents)
+            this.selectedStudents = [];
+
+        if (event.currentTarget.checked)
+            this.selectedStudents.push(student._id);
+        else
+            this.selectedStudents.splice(this.selectedStudents.indexOf(student._id), 1);
     }
 }

@@ -1,9 +1,9 @@
 ﻿<h2>Create class</h2>
 <form [formGroup]="classForm" (ngSubmit)="onSubmit()">
     <section class="form-group">
-        <input placeholder="Class" type="text" formControlName="class" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.class.errors }" />
-        <span *ngIf="submitted && f.class.errors" class="invalid-feedback">
-            <span *ngIf="f.class.errors.required">Class is required</span>
+        <input placeholder="Class" type="text" formControlName="classTitle" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.classTitle.errors }" />
+        <span *ngIf="submitted && f.classTitle.errors" class="invalid-feedback">
+            <span *ngIf="f.classTitle.errors.required">Class is required</span>
         </span>
     </section>
     <section class="form-group">
@@ -15,7 +15,7 @@
             <span *ngIf="f.teacher.errors.required">Teacher is required</span>
         </span>
     </section>
-    <section class="form-group">
+    <section >
         <table class="table table-striped" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="3">
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let student of students">
-                    <td><input type="checkbox"/></td>
+                    <td><input (change)="onSelectStudent(student, $event)" type="checkbox"/></td>
                     <td>{{student.firstName}} {{student.lastName}}</td>
                     <td>{{student.email}}</td>
                 </tr>

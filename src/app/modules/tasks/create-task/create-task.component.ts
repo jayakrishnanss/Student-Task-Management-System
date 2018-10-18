@@ -3,29 +3,35 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AlertService, APIService } from '../../../core/_services';
-import { User } from '../../../core/_models/user';
+import { StudClass } from '../../../core/_models/class';
 
 @Component({ selector: 'app-list-user', templateUrl: 'create-task.component.html' })
 export class CreateTaskComponent implements OnInit {
+    taskForm: FormGroup;
     loading = false;
-    users: User[];
-    userType = '';
-    thisUser:any;
+    classes: StudClass[];
     constructor(
+        private formBuilder: FormBuilder,
         private apiService: APIService,
         private alertService: AlertService) { }
 
     ngOnInit() {
+        this.taskForm = this.formBuilder.group({
+            class: ['', Validators.required],
+            description: ['', Validators.required],
+            question: ['', [Validators.required]],
+            solution: ['', [Validators.required]],
+            taskans: ['', Validators.required],
+            title: ['', Validators.required]
+        });
         this.loading = true;
-        const parameters = new URLSearchParams(window.location.search);
-        this.userType = parameters.get('type');
-        this.apiService.postAPICall(`${config.apiUrl}/users/getUsers`, { userType: this.userType.toLowerCase() })
+        this.apiService.getAPICall(`${config.apiUrl}/class/listClasses`, '')
             .pipe(first())
             .subscribe(
                 data => {
                     if (data.status === 1) {
                         this.loading = false;
-                        this.users = data.result;
+                        this.classes = data.result;
                     } else {
                         this.alertService.error(data.message);
                         this.loading = false;
@@ -36,43 +42,12 @@ export class CreateTaskComponent implements OnInit {
                     this.loading = false;
                 });
     }
-    deleteUser(user: User) {
-        this.loading = true;
-        this.thisUser = user;
-        this.apiService.postAPICall(`${config.apiUrl}/users/deleteUser`, user)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    if (data.status === 1) {
-                        this.loading = false;
-                        this.users.splice(this.users.indexOf(this.thisUser), 1)
-                    } else {
-                        this.alertService.error(data.message);
-                        this.loading = false;
-                    }
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-    };
-    approveUser(user: User) {
-        this.loading = true;
-        user.isApproved = true;
-        this.apiService.postAPICall(`${config.apiUrl}/users/approveUser`, user)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    if (data.status === 1) {
-                        this.loading = false;
-                    } else {
-                        this.alertService.error(data.message);
-                        this.loading = false;
-                    }
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-    };
+    get f() { return this.taskForm.controls; }
+    onSubmit() {
+        if (this.taskForm.invalid) {
+            return;
+        }
+        debugger
+        console.log(this.taskForm)
+    }
 }
