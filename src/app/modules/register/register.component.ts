@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AlertService, UserService } from '../../core/_services';
+import { AlertService, APIService } from '../../core/_services';
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
@@ -14,15 +14,16 @@ export class RegisterComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        private userService: UserService,
+        private apiService: APIService,
         private alertService: AlertService) { }
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            userType: ['', Validators.required],
         });
     }
 
@@ -38,12 +39,19 @@ export class RegisterComponent implements OnInit {
         }
 
         this.loading = true;
-        this.userService.register(this.registerForm.value)
+        // Sign up API call
+        this.apiService.postAPICall(`${config.apiUrl}/users/signUp`,this.registerForm.value)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Registration successful', true);
-                    this.router.navigate(['/login']);
+                    if(data.status === 1){
+                        this.alertService.success(data.message, true);
+                        this.loading = false;
+                        this.router.navigate(['/login']);
+                    }else{
+                        this.alertService.error(data.message);
+                        this.loading = false;
+                    }                   
                 },
                 error => {
                     this.alertService.error(error);

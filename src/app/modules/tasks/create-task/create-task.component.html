@@ -1,0 +1,72 @@
+﻿<div class="col-md-6">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <section class="form-group">
+      <select formControlName="class" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.class.errors }">
+        <option [ngValue]="null" selected="selected">Class</option>
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+      </select>
+      <span *ngIf="submitted && f.class.errors" class="invalid-feedback">
+        <span *ngIf="f.class.errors.required">Class is required</span>
+      </span>
+    </section>
+    <section class="form-group">
+      <input placeholder="Description" type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+    </section>
+    <section class="form-group">
+      <input placeholder="Title" type="text" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+      <span *ngIf="submitted && f.title.errors" class="invalid-feedback">
+        <span *ngIf="f.title.errors.required">Title is required</span>
+      </span>
+    </section>
+    <section class="form-group">
+      <input placeholder="Question" type="text" formControlName="question" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.question.errors }" />
+      <span *ngIf="submitted && f.question.errors" class="invalid-feedback">
+        <span *ngIf="f.question.errors.required">Question is required</span>
+      </span>
+    </section>
+    <section class="form-group">
+      <label>Solution</label>
+        <input type="radio" value="yes" name="task-ans">Yes
+        <input type="radio" value="no" name="task-ans">No
+    </section>
+    <section class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">Add task</button>
+      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+    </section>
+  </form>
+  <h2>Tasks</h2>
+  <table class="table table-striped" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="5">
+    <thead>
+      <tr>
+        <th style="width: 20%">
+          <mfDefaultSorter by="name">Name</mfDefaultSorter>
+        </th>
+        <th style="width: 50%">
+          <mfDefaultSorter by="email">Email</mfDefaultSorter>
+        </th>
+        <th style="width: 10%">
+          <mfDefaultSorter by="age">Action</mfDefaultSorter>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{user.firstName}} {{user.lastName}}</td>
+        <td>{{user.email}}</td>
+        <td>
+          <button *ngIf="!user.isApproved" (click)="approveUser(user)" class="btn btn-danger"> Approve</button>
+          <button class="btn btn-danger" (click)="deleteUser(user)"> Delete</button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4">
+          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
