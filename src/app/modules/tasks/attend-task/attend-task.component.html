@@ -1,0 +1,20 @@
+﻿<section >
+  <label>Class:{{currentUser.class}}</label>
+</section>
+<section >
+  <label>No. of tasks:{{totalTaskNum}}</label>
+</section>
+<section >
+  <label>{{currentTask}}</label>
+</section>
+<section>
+    <label>Solution:</label>
+    <input type="radio" [checked]="selQnAns"  (change)="selAns($event)" value="true" name="solution">Yes
+    <input type="radio" [checked]="!selQnAns"  (change)="selAns($event)" value="false" name="solution">No
+  </section>
+<section>
+  <button [disabled]="loading" class="btn btn-primary" (click)="showPrev(currentTask)">Back</button>
+  <button [disabled]="loading" class="btn btn-primary" (click)="showNext(currentTask, selQnAns)">Next</button>
+  <button [disabled]="loading" class="btn btn-primary" (click)="submit(currentTask, selQnAns)">Submit</button>
+  <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+</section>

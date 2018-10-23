@@ -73,7 +73,7 @@ export class CreateTaskComponent implements OnInit {
         this.getTask(event.target.value);
     }
     getTask(classTitle: string) {
-        this.apiService.postAPICall(`${config.apiUrl}/task/listTasks`, { classTitle: classTitle })
+        this.apiService.postAPICall(`${config.apiUrl}/task/listTasks`, { classTitle: classTitle, userType: 'teacher' })
             .pipe(first())
             .subscribe(
                 data => {

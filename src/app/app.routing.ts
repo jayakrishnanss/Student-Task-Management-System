@@ -5,7 +5,8 @@ import { LoginComponent } from './modules/login';
 import { RegisterComponent } from './modules/register';
 import { UserListingComponent } from './modules/admin/user-listing';
 import {CreateTaskComponent} from './modules/tasks/create-task';
-import {ListTaskComponent} from './modules/tasks/task-listing';
+import {AttendTaskComponent} from './modules/tasks/attend-task';
+import {ReviewTaskComponent} from './modules/tasks/review-task';
 import {ClassComponent} from './modules/admin/class';
 import { AuthGuard } from './core/_guards';
 
@@ -16,7 +17,8 @@ const appRoutes: Routes = [
     { path: 'user-listing', component: UserListingComponent, canActivate: [AuthGuard] },
     { path: 'create-class', component: ClassComponent, canActivate: [AuthGuard] },
     { path: 'create-task', component: CreateTaskComponent, canActivate: [AuthGuard] },
-    { path: 'list-tasks', component: ListTaskComponent, canActivate: [AuthGuard] },
+    { path: 'assigned-task', component: AttendTaskComponent, canActivate: [AuthGuard] },
+    { path: 'review-tasks', component: ReviewTaskComponent, canActivate: [AuthGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

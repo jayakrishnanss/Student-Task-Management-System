@@ -1,0 +1,41 @@
+﻿<h2>Tasks for review</h2>
+<table class="table table-striped" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="5">
+  <thead>
+    <tr>
+      <th style="width: 70%">
+        <mfDefaultSorter by="name">Student</mfDefaultSorter>
+      </th>
+      <th style="width: 20%">
+        <mfDefaultSorter by="name">Class</mfDefaultSorter>
+      </th>
+      <th style="width: 10%">
+        <mfDefaultSorter by="email">Action</mfDefaultSorter>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of tasksForReview">
+      <td>{{task.email}}</td>
+      <td>{{task.classTitle}}</td>
+      <td>
+        <button class="btn btn-danger" (click)="reviewTask(task)"> Review</button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4">
+        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+<jw-modal id="review-modal">
+  <section>
+    <label>Student</label>
+  </section>
+  <section>
+    <label>Class</label>
+  </section>
+  <button (click)="closeModal('review-modal');">Close</button>
+</jw-modal>

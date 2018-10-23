@@ -1,4 +1,5 @@
 const taskModel = require('../model/Task');
+const studTaskModel = require('../model/StudTask');
 var apiResponse = require('../utils/Response'),
     config = require('../utils/Config');
 
@@ -60,7 +61,7 @@ exports.createTask = (req, res) => {
 exports.getTasks = (req, res) => {
     taskModel.find({
             classTitle: req.classTitle
-        })
+        }, req.userType === 'student' ? 'classTitle question' : '')
         .then(data => {
             if (data) {
                 res(apiResponse.success({
@@ -80,10 +81,39 @@ exports.getTasks = (req, res) => {
             }));
         });
 };
-exports.formatTask = (data) => {
-    return {
-        id: data._id,
-        classTitle: data.classTitle,
-        question: data.question
-    };
+exports.submitTask = (req, res) => {
+    const newStudTask = new studTaskModel(req);
+    newStudTask.save()
+        .then(data => {
+            res(apiResponse.success({
+                message: config.messages.submit_task_success,
+                status: config.status.success,
+                result: {}
+            }));
+        }).catch(err => {
+            res(apiResponse.error({
+                message: err
+            }));
+        });
+};
+exports.getSubmittedTasks = (res) => {
+    studTaskModel.find()
+        .then(data => {
+            if (data) {
+                res(apiResponse.success({
+                    message: config.messages.data_load_success,
+                    status: config.status.success,
+                    result: data
+                }));
+            } else {
+                res(apiResponse.success({
+                    status: config.status.failure,
+                    message: config.messages.error
+                }));
+            }
+        }).catch(err => {
+            res(apiResponse.error({
+                message: config.messages.error
+            }));
+        });
 };

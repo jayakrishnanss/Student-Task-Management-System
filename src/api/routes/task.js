@@ -17,5 +17,14 @@ router.post('/listTasks', (req, res, next) => {
     res.json(data);
   })
 });
-
+router.post('/submitTask', (req, res, next) => {
+  taskController.submitTask(req.body, (data) => {
+    res.json(data);
+  })
+});
+router.get('/getSubmittedTasks', (req, res, next) => {
+  taskController.getSubmittedTasks( (data) => {
+    res.json(data);
+  })
+});
 module.exports = router;

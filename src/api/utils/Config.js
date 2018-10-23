@@ -20,6 +20,7 @@ const config = {
         create_task_success: 'Task has been created successfully',
         task_exist: 'Task title already exists',
         update_task_success: 'Task has been updated successfully',
+        submit_task_success: 'Task has been submitted successfully'
     },
     status: {
         success: 1,
