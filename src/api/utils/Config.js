@@ -16,7 +16,10 @@ const config = {
         approve_success: 'User has been approved successfully',
         delete_success: 'User has been deleted successfully',
         create_class_success: 'Class has been created successfully',
-        class_exist: 'Class already exists'
+        class_exist: 'Class already exists',
+        create_task_success: 'Task has been created successfully',
+        task_exist: 'Task title already exists',
+        update_task_success: 'Task has been updated successfully',
     },
     status: {
         success: 1,

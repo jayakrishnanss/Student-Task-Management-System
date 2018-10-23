@@ -71,7 +71,7 @@ export class ClassComponent implements OnInit {
         this.loading = true;
         var calssReq =  this.classForm.value;
         calssReq.students = this.selectedStudents;
-        debugger
+        
         this.apiService.postAPICall(`${config.apiUrl}/class/createClass`,calssReq)
             .pipe(first())
             .subscribe(
@@ -79,7 +79,6 @@ export class ClassComponent implements OnInit {
                     if (data.status === 1) {
                         this.alertService.success(data.message, true);
                         this.loading = false;
-                        this.router.navigate(['/login']);
                     } else {
                         this.alertService.error(data.message);
                         this.loading = false;

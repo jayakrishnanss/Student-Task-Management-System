@@ -47,3 +47,19 @@ exports.getClasses = (res) => {
             }));
         });
 };
+exports.getStudentClass = (req, res) => {
+    classModel.findOne({
+            students: req._id
+        })
+        .then(data => {
+            res(apiResponse.success({
+                message: config.messages.data_load_success,
+                status: config.status.success,
+                result: data.classTitle
+            }));
+        }).catch(err => {
+            res(apiResponse.error({
+                message: config.messages.error
+            }));
+        });
+};
