@@ -86,7 +86,8 @@ export class AttendTaskComponent implements OnInit {
         let taskToSubmit = {
             "classTitle": this.currentUser.class,
             "email": this.currentUser.email,
-            "task": this.attTasks
+            "task": this.attTasks,
+            "mark": 0
         }
         this.apiService.postAPICall(`${config.apiUrl}/task/submitTask`, taskToSubmit)
             .pipe(first())

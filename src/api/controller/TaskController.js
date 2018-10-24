@@ -117,3 +117,23 @@ exports.getSubmittedTasks = (res) => {
             }));
         });
 };
+exports.submitResult = (req, res) => {
+    studTaskModel.findOneAndUpdate({
+            'email': req.email
+        }, {
+            mark: req.mark
+        }, {
+            new: true
+        })
+        .then(data => {
+            res(apiResponse.success({
+                message: config.messages.submit_task_success,
+                status: config.status.success,
+                result: data
+            }));
+        }).catch(err => {
+            res(apiResponse.error({
+                message: config.messages.error
+            }));
+        });
+};

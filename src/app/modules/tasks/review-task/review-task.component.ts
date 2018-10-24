@@ -70,7 +70,6 @@ export class ReviewTaskComponent implements OnInit {
                                 }
                             }
                         }
-                        debugger
                     } else {
                         this.alertService.error(data.message);
                         this.loading = false;
@@ -83,5 +82,25 @@ export class ReviewTaskComponent implements OnInit {
     }
     closeModal(id: string) {
         this.modalService.close(id);
+    }
+    submitResult() {
+        debugger
+        this.apiService.postAPICall(`${config.apiUrl}/task/submitResult`, { email: this.selectedTask.email, mark: this.totalMark })
+            .pipe(first())
+            .subscribe(
+                data => {
+                    debugger
+                    if (data.status === 1) {
+                        this.alertService.success(data.message, true);
+                        this.loading = false;
+                    } else {
+                        this.alertService.error(data.message);
+                        this.loading = false;
+                    }
+                },
+                error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
     }
 }

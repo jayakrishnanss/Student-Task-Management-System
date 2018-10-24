@@ -12,6 +12,10 @@ const StudTaskSchema = mongoose.Schema({
     task: {
         type: ['Object'],
         required: true
+    },
+    mark: {
+        type: 'number',
+        required: false
     }
 }, {
     timestamps: true

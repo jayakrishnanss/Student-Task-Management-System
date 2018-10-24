@@ -27,4 +27,9 @@ router.get('/getSubmittedTasks', (req, res, next) => {
     res.json(data);
   })
 });
+router.post('/submitResult', (req, res, next) => {
+  taskController.submitResult(req.body, (data) => {
+    res.json(data);
+  })
+});
 module.exports = router;
