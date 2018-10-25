@@ -3,29 +3,37 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AlertService, APIService } from '../../../core/_services';
-import { User } from '../../../core/_models/user';
+import { StudClass } from '../../../core/_models/class';
+import { Task } from '../../../core/_models/task';
 
-@Component({ selector: 'app-list-user', templateUrl: 'create-task.component.html' })
+@Component({ selector: 'app-create-task', templateUrl: 'create-task.component.html' })
 export class CreateTaskComponent implements OnInit {
+    taskForm: FormGroup;
     loading = false;
-    users: User[];
-    userType = '';
-    thisUser:any;
+    submitted = false;
+    classes: StudClass[];
+    tasks: Task[];
+    selQn: string;
+    selQnAns: boolean;
     constructor(
+        private formBuilder: FormBuilder,
         private apiService: APIService,
         private alertService: AlertService) { }
 
     ngOnInit() {
+        this.taskForm = this.formBuilder.group({
+            classTitle: ['', Validators.required],
+            question: ['', [Validators.required]],
+            solution: ['', Validators.required]
+        });
         this.loading = true;
-        const parameters = new URLSearchParams(window.location.search);
-        this.userType = parameters.get('type');
-        this.apiService.postAPICall(`${config.apiUrl}/users/getUsers`, { userType: this.userType.toLowerCase() })
+        this.apiService.getAPICall(`${config.apiUrl}/class/listClasses`, '')
             .pipe(first())
             .subscribe(
                 data => {
                     if (data.status === 1) {
                         this.loading = false;
-                        this.users = data.result;
+                        this.classes = data.result;
                     } else {
                         this.alertService.error(data.message);
                         this.loading = false;
@@ -36,16 +44,21 @@ export class CreateTaskComponent implements OnInit {
                     this.loading = false;
                 });
     }
-    deleteUser(user: User) {
+    get f() { return this.taskForm.controls; }
+    onSubmit() {
+        this.submitted = true;
+        if (this.taskForm.invalid) {
+            return;
+        }
         this.loading = true;
-        this.thisUser = user;
-        this.apiService.postAPICall(`${config.apiUrl}/users/deleteUser`, user)
+        this.apiService.postAPICall(`${config.apiUrl}/task/createTask`, this.taskForm.value)
             .pipe(first())
             .subscribe(
                 data => {
                     if (data.status === 1) {
+                        this.alertService.success(data.message, true);
                         this.loading = false;
-                        this.users.splice(this.users.indexOf(this.thisUser), 1)
+                        this.getTask(this.taskForm.value.classTitle);
                     } else {
                         this.alertService.error(data.message);
                         this.loading = false;
@@ -55,16 +68,19 @@ export class CreateTaskComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
                 });
-    };
-    approveUser(user: User) {
-        this.loading = true;
-        user.isApproved = true;
-        this.apiService.postAPICall(`${config.apiUrl}/users/approveUser`, user)
+    }
+    changeClass(event: any) {
+        this.getTask(event.target.value);
+    }
+    getTask(classTitle: string) {
+        this.apiService.postAPICall(`${config.apiUrl}/task/listTasks`, { classTitle: classTitle, userType: 'teacher' })
             .pipe(first())
             .subscribe(
                 data => {
                     if (data.status === 1) {
+                        this.alertService.success(data.message, true);
                         this.loading = false;
+                        this.tasks = data.result;
                     } else {
                         this.alertService.error(data.message);
                         this.loading = false;
@@ -74,5 +90,13 @@ export class CreateTaskComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
                 });
-    };
+    }
+    editTask(task:Task) {
+        this.selQn = task.question;
+        this.selQnAns = task.solution;
+        
+    }
+    deleteTask(task:Task) {
+
+    }
 }

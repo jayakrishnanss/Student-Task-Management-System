@@ -16,6 +16,9 @@ export class APIService {
             }));
     }
     getAPICall(url: string, param: any) {
-        return this.http.get(url + param);
+        return this.http.get<any>(url + param)
+            .pipe(map(response => {
+                return response;
+            }));
     }
 }

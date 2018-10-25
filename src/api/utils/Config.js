@@ -14,7 +14,13 @@ const config = {
         required_fields: 'Please fill out all required fields.',
         data_load_success: 'Data loaded successfully.',
         approve_success: 'User has been approved successfully',
-        delete_success: 'User has been deleted successfully'
+        delete_success: 'User has been deleted successfully',
+        create_class_success: 'Class has been created successfully',
+        class_exist: 'Class already exists',
+        create_task_success: 'Task has been created successfully',
+        task_exist: 'Task title already exists',
+        update_task_success: 'Task has been updated successfully',
+        submit_task_success: 'Task has been submitted successfully'
     },
     status: {
         success: 1,

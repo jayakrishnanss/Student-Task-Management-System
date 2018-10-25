@@ -6,4 +6,5 @@
     userType: string;
     password: string;
     isApproved: boolean;
+    _id:string;
 }
